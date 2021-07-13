@@ -131,26 +131,33 @@ print('###############################')
 print('#       start training        #')
 print('###############################')
 
-classifier.train(input_fn=lambda: my_input_fn(FILE_TRAIN, repeat_count=500, shuffle_count=256))
+# classifier.train(input_fn=lambda: my_input_fn(FILE_TRAIN, repeat_count=500, shuffle_count=10))
 
 
-# Evaluate our model using the examples contained in FILE_TEST
-# Return value will contain evaluation_metrics such as: loss & average_loss
-evaluate_result = classifier.evaluate(
-    input_fn=lambda: my_input_fn(FILE_TEST, False, 4))
-print("Evaluation results")
-for key in evaluate_result:
-    print("   {}, was: {}".format(key, evaluate_result[key]))
 
 # Predict the type of some Iris flowers.
 # Let's predict the examples in FILE_TEST, repeat only once.
-predict_results = classifier.predict(
-    input_fn=lambda: my_input_fn(FILE_TEST, False, 1))
+predict_results = classifier.predict(input_fn=lambda: my_input_fn(FILE_TEST, 1, 1))
+
+# predict_results = [i for i in predict_results]
+
 print("Predictions on test file")
+print(predict_results)
 for prediction in predict_results:
     # Will print the predicted class, i.e: 0, 1, or 2 if the prediction
     # is Iris Sentosa, Vericolor, Virginica, respectively.
-    print(prediction["class_ids"][0])
+    print(prediction)
+    # print("   {}, was: {}".format(prediction, predict_results[prediction]))
+
+    # print(prediction["class_ids"][0])
+
+# Evaluate our model using the examples contained in FILE_TEST
+# Return value will contain evaluation_metrics such as: loss & average_loss
+evaluate_result = classifier.evaluate(input_fn=lambda: my_input_fn(FILE_TEST, 1, 4))
+print("Evaluation results")
+for key in evaluate_result:
+    print(key)
+    # print("   {}, was: {}".format(key, evaluate_result[key]))
 
 # Let create a dataset for prediction
 # We've taken the first 3 examples in FILE_TEST
@@ -176,10 +183,11 @@ predict_results = classifier.predict(input_fn=new_input_fn)
 # Print results
 print("Predictions on memory")
 for idx, prediction in enumerate(predict_results):
-    type = prediction["class_ids"][0]  # Get the predicted class (index)
-    if type == 0:
-        print("I think: {}, is Iris Sentosa".format(prediction_input[idx]))
-    elif type == 1:
-        print("I think: {}, is Iris Versicolor".format(prediction_input[idx]))
-    else:
-        print("I think: {}, is Iris Virginica".format(prediction_input[idx]))
+    print(idx, prediction)
+    # type = prediction["class_ids"][0]  # Get the predicted class (index)
+    # if type == 0:
+    #     print("I think: {}, is Iris Sentosa".format(prediction_input[idx]))
+    # elif type == 1:
+    #     print("I think: {}, is Iris Versicolor".format(prediction_input[idx]))
+    # else:
+    #     print("I think: {}, is Iris Virginica".format(prediction_input[idx]))
